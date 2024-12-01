@@ -7,7 +7,6 @@ pipeline {
                 echo 'Hello, Jenkins! This is a simple pipeline that outputs text.'
             }
         }
-stages {
         stage('Print 2') {
             steps {
                 echo 'Hello, mddj pipeline that outputs text.'
