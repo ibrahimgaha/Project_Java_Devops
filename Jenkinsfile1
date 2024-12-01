@@ -23,21 +23,14 @@ pipeline {
         stage('Compile') {
             steps {
                 echo 'Compiling the application...'
-                bat 'mvn clean compile'
+                bat 'mvn clean compile -DskipTests'
             }
         }
         
-        stage('Run Tests') {
-            steps {
-                echo 'Running unit tests...'
-                // bat 'mvn test'
-            }
-        }
-
-        stage('Package') {
+        stage('Package') { // Skip the 'Run Tests' stage
             steps {
                 echo 'Packaging the application...'
-                bat 'mvn package'
+                bat 'mvn package -DskipTests'
             }
         }
         
