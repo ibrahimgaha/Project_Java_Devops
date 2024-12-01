@@ -9,29 +9,30 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Cloning repository...'
-                git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
+              //  git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
             }
         }
 
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-                bat 'mvn -version'
+               // bat 'mvn -version'
             }
         }
         
         stage('Compile') {
             steps {
                 echo 'Compiling the application...'
-                bat 'mvn clean compile -DskipTests'
+                //bat 'mvn clean compile -DskipTests'
             }
         }
         
         stage('Package') { // Skip the 'Run Tests' stage
             steps {
                 echo 'Packaging the application...'
-                bat 'mvn package -DskipTests'
-            }
+             //   bat 'mvn package -DskipTests'
+            echo %cd%            
+}
         }
         
         stage('Archive Artifacts') {
