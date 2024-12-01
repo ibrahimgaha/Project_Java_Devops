@@ -32,7 +32,7 @@ pipeline {
                 echo 'Packaging the application...'
              //   bat 'mvn package -DskipTests'
             echo %cd%            
-}
+                }
         }
         
         stage('Archive Artifacts') {
