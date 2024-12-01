@@ -2,42 +2,47 @@ pipeline {
     agent any
     
     tools {
-        maven "mvn"
+        maven "mvn" // Use the Maven tool configured in Jenkins
     }
     
     stages {
         stage('Checkout Code') {
             steps {
                 echo 'Cloning repository...'
-              //  git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
+                // Uncomment the following line to enable Git checkout
+                // git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
             }
         }
 
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-               // bat 'mvn -version'
+                // Uncomment the following line to verify Maven version
+                // bat 'mvn -version'
             }
         }
         
         stage('Compile') {
             steps {
                 echo 'Compiling the application...'
-                //bat 'mvn clean compile -DskipTests'
+                // Uncomment the following line to compile without running tests
+                // bat 'mvn clean compile -DskipTests'
             }
         }
         
         stage('Package') { // Skip the 'Run Tests' stage
             steps {
                 echo 'Packaging the application...'
-             //   bat 'mvn package -DskipTests'
-            echo %cd%            
-                }
+                // Uncomment the following line to package without running tests
+                // bat 'mvn package -DskipTests'
+                bat 'echo Current directory: %cd%' // Print the current directory
+            }
         }
         
         stage('Archive Artifacts') {
             steps {
                 echo 'Archiving build artifacts...'
+                // Archive the .jar files from the target directory
                 archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
             }
         }
@@ -46,7 +51,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline finished. Cleaning up workspace...'
-            cleanWs()
+            cleanWs() // Clean up the workspace after the pipeline finishes
         }
         success {
             echo 'Build completed successfully!'
