@@ -1,16 +1,65 @@
-   
 pipeline {
     agent any
+    
+    environment {
+        MAVEN_HOME = tool 'mvn' // Ensure Maven is configured in Jenkins
+        PATH = "${env.MAVEN_HOME}\\bin;${env.PATH}"
+    }
+    
     stages {
-        stage('Print Text') {
+        stage('Checkout Code') {
             steps {
-                echo 'Hello, Jenkins! This is a simple pipeline that outputs text.'
+                echo 'Cloning repository...'
+                git branch: 'main', url: 'https://github.com/your-repo/maven-project.git'
             }
         }
-        stage('Print 2') {
+
+        stage('Setup Environment') {
             steps {
-                echo 'Hello, mddj pipeline that outputs text.'
+                echo 'Setting up Maven environment...'
+                bat 'mvn -version'
             }
+        }
+        
+        stage('Compile') {
+            steps {
+                echo 'Compiling the application...'
+                bat 'mvn clean compile'
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                echo 'Running unit tests...'
+                bat 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the application...'
+                bat 'mvn package'
+            }
+        }
+        
+        stage('Archive Artifacts') {
+            steps {
+                echo 'Archiving build artifacts...'
+                archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Pipeline finished. Cleaning up workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed. Please check the logs.'
         }
     }
 }
