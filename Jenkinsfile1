@@ -1,16 +1,15 @@
 pipeline {
     agent any
     
-    environment {
-        MAVEN_HOME = tool 'mvn' // Ensure Maven is configured in Jenkins
-        PATH = "${env.MAVEN_HOME}\\bin;${env.PATH}"
+    tools {
+        maven "mvn"
     }
     
     stages {
         stage('Checkout Code') {
             steps {
                 echo 'Cloning repository...'
-                git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops/edit'
+                git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
             }
         }
 
