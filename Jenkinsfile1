@@ -1,1 +1,11 @@
    
+pipeline {
+    agent any
+    stages {
+        stage('Print Text') {
+            steps {
+                echo 'Hello, Jenkins! This is a simple pipeline that outputs text.'
+            }
+        }
+    }
+}
