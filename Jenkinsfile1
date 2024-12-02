@@ -6,6 +6,7 @@ pipeline {
     }
     
     stages {
+
         stage('Checkout Code') {
             steps {
                 echo 'Cloning repository...'
@@ -13,6 +14,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
             }
         }
+
 
         stage('Setup Environment') {
             steps {
@@ -38,15 +40,19 @@ pipeline {
             }
         }
         
-        stage('Archive Artifacts') {
+        stage('print working directory') {
             steps {
-                echo 'Archiving build artifacts...'
-                // Archive the generated .jar file for future use
-                archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
                 // Print the current working directory
                 bat 'echo Current directory: %cd%' 
             }
         }
+        stage("runing Images: docker compose") {
+            steps {
+                dir("app") {
+                    bat "docker-compose up -d"
+                }
+            }
+        }// execute code 
     }
     
     post {
