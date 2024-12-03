@@ -11,6 +11,7 @@ pipeline {
             steps {
                 echo 'Cloning repository...'
                 // Cloning the project repository
+                //DUPLICATE
                 git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
             }
         }
