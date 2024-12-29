@@ -6,60 +6,52 @@ pipeline {
     }
     
     stages {
-
         stage('Checkout Code') {
             steps {
                 echo 'Cloning repository...'
-                // Cloning the project repository
-                //DUPLICATE
                 git branch: 'main', url: 'https://github.com/ibrahimgaha/Project_Java_Devops'
             }
         }
 
-
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-                // Verifying Maven installation and version
-                bat 'mvn -version'
+                sh 'mvn -version' // Use `sh` for Linux or `bat` for Windows
             }
         }
         
         stage('Compile') {
             steps {
                 echo 'Compiling the application...'
-                // Compile the project (skipping tests)
-                bat 'mvn clean compile -DskipTests'
+                sh 'mvn clean compile -DskipTests'
             }
         }
         
         stage('Package') { 
             steps {
                 echo 'Packaging the application...'
-                // Build and package the project to generate a .jar file
-                bat 'mvn package -DskipTests'
+                sh 'mvn package -DskipTests'
             }
         }
         
-        stage('print working directory') {
+        stage('Print Working Directory') {
             steps {
-                // Print the current working directory
-                bat 'echo Current directory: %cd%' 
+                sh 'echo Current directory: $(pwd)'
             }
         }
-        stage("runing Images: docker compose") {
+        
+        stage('Run Docker Compose') {
             steps {
                 dir("app") {
-                    bat "docker-compose up -d"
+                    sh "docker-compose up -d" // Adjust path if `docker-compose.yml` is elsewhere
                 }
             }
-        }// execute code 
+        }
     }
     
     post {
         always {
             echo 'Pipeline finished. Cleaning up workspace...'
-            // Clean up the workspace after the pipeline execution
             cleanWs()
         }
         success {

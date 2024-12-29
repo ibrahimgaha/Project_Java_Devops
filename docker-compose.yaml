@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   mysql:
     image: mysql:8.0
@@ -17,9 +18,9 @@ services:
   spring-app:
     build:
       context: .
-      dockerfile: Dockerfile  # Path to your Dockerfile
+      dockerfile: Dockerfile # Path to your Dockerfile
+    image: ibrahimgaha/spring-app:latest # Optional custom image name
     container_name: spring-app
-    
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/JavaDevops
       SPRING_DATASOURCE_USERNAME: root
