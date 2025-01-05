@@ -45,6 +45,10 @@ pipeline {
                 dir("app") {
                     sh "docker-compose up -d" // Adjust path if `docker-compose.yml` is elsewhere
                 }
+        stage('Deploy') {
+            steps {echo 'Deploying'
+            }
+               
             }
         }
     }
