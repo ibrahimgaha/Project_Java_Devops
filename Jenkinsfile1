@@ -16,47 +16,47 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-                sh 'mvn -version' // Use sh for Linux or bat for Windows
+                bat 'mvn -version' // Use sh for Linux or bat for Windows
             }
         }
         
         stage('Compile') {
             steps {
                 echo 'Compiling the application...'
-                sh 'mvn clean compile -DskipTests'
+                bat 'mvn clean compile -DskipTests'
             }
         }
         
         stage('Package') { 
             steps {
                 echo 'Packaging the application...'
-                sh 'mvn package -DskipTests'
+                bat 'mvn package -DskipTests'
             }
         }
         
         stage('Print Working Directory') {
             steps {
-                sh 'echo Current directory: $(pwd)'
+                bat 'echo Current directory: $(pwd)'
             }
         }
         
         stage('Run Docker Compose') {
             steps {
                 dir("app") {
-                    sh "docker-compose up -d" // Adjust path if docker-compose.yml is elsewhere
+                    bat "docker-compose up -d" // Adjust path if docker-compose.yml is elsewhere
                 }
             }
                
             }
            stage('Deploy - Staging') {
         steps {
-            sh './deploy staging'
-            sh './run-smoke-tests'
+            bat './deploy staging'
+            bat './run-smoke-tests'
         }
     }
     stage('Deploy - Production') {
         steps {
-            sh './deploy production'
+            bat './deploy production'
         }
     }
     }
