@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        maven "mvn" // Maven tool configured in Jenkins
+        maven "mvn" // Maven tool configuré dans Jenkins
     }
     
     stages {
@@ -16,7 +16,7 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-                sh 'mvn -version' // Use `sh` for Linux or `bat` for Windows
+                sh 'mvn -version' // Utilisez `bat` pour Windows
             }
         }
         
@@ -43,12 +43,16 @@ pipeline {
         stage('Run Docker Compose') {
             steps {
                 dir("app") {
-                    sh "docker-compose up -d" // Adjust path if `docker-compose.yml` is elsewhere
+                    echo 'Running Docker Compose...'
+                    sh "docker-compose up -d" // Vérifiez le chemin du fichier
                 }
-        stage('Deploy') {
-            steps {echo 'Deploying'
             }
-               
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+                // Ajoutez ici des étapes de déploiement si nécessaire
             }
         }
     }
