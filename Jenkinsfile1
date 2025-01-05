@@ -51,10 +51,11 @@ pipeline {
         stage('Deploy - Staging') {
             steps {
                 echo 'Deploying to Kubernetes (Staging)...'
-                script {
+                echo 'deploying'
+                /* script {
                     dir("k8s") { // Assuming Kubernetes scripts are in the 'k8s' directory of your repository
                         echo 'Applying Kubernetes manifests for staging...'
-                        bat 'kubectl apply -f deployment.yaml'
+                        bat 'kubectl apply -f deployment.yaml'*/
                     }
                 }
             }
@@ -63,10 +64,11 @@ pipeline {
         stage('Deploy - Production') {
             steps {
                 echo 'Deploying to Kubernetes (Production)...'
-                script {
+                echo 'deploying'
+              /*  script {
                     dir("k8s") { // Assuming a separate Kubernetes configuration for production
                         echo 'Applying Kubernetes manifests for production...'
-                       bat 'kubectl apply -f deployment.yaml'
+                       bat 'kubectl apply -f deployment.yaml'*/
                     }
                 }
             }
