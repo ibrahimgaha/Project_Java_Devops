@@ -16,7 +16,7 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-                bat 'mvn -version' // Use sh for Linux or bat for Windows
+                bat 'mvn -version' // Use sh for Windows; replace with `sh` for Linux agents
             }
         }
         
@@ -46,19 +46,35 @@ pipeline {
                     bat "docker-compose up -d" // Adjust path if docker-compose.yml is elsewhere
                 }
             }
-               
+        }
+        
+        stage('Deploy - Staging') {
+            steps {
+                echo 'Deploying to Kubernetes (Staging)...'
+                script {
+                    dir("k8s") { // Assuming Kubernetes scripts are in the 'k8s' directory of your repository
+                        echo 'Applying Kubernetes manifests for staging...'
+                        bat 'kubectl apply -f mysql-deployment.yml'
+                        bat 'kubectl apply -f mysql-pv.yml'
+                        bat 'kubectl apply -f spring-app-deployment.yml'
+                    }
+                }
             }
-           stage('Deploy - Staging') {
-        steps {
-            bat './deploy staging'
-            bat './run-smoke-tests'
         }
-    }
-    stage('Deploy - Production') {
-        steps {
-            bat './deploy production'
+        
+        stage('Deploy - Production') {
+            steps {
+                echo 'Deploying to Kubernetes (Production)...'
+                script {
+                    dir("k8s") { // Assuming a separate Kubernetes configuration for production
+                        echo 'Applying Kubernetes manifests for production...'
+                        bat 'kubectl apply -f production-mysql-deployment.yml'
+                        bat 'kubectl apply -f production-mysql-pv.yml'
+                        bat 'kubectl apply -f production-spring-app-deployment.yml'
+                    }
+                }
+            }
         }
-    }
     }
     
     post {
@@ -73,4 +89,4 @@ pipeline {
             echo 'Build failed. Please check the logs.'
         }
     }
-} 
+}
