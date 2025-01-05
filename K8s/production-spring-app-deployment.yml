@@ -1,0 +1,42 @@
+# k8s/production-spring-app-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-production
+  labels:
+    app: spring-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+        - name: spring-app
+          image: ibrahimgaha/spring-app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-production:3306/JavaDevops
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: root
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app-production
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+    nodePort: 30089
+  selector:
+    app: spring-app
+  type: NodePort
