@@ -1,4 +1,3 @@
-kubectl apply -f deployment.yaml --validate=false
 
 apiVersion: apps/v1
 kind: Deployment
@@ -19,7 +18,8 @@ spec:
         image: ibrahimgaha/dsi-ibrahim-gaha:latest # Replace with your Docker image
         ports:
         - containerPort: 8080
----
+---kubectl apply -f deployment.yaml --validate=false
+
 apiVersion: v1
 kind: Service
 metadata:
