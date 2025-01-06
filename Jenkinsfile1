@@ -1,10 +1,10 @@
 pipeline {
     agent any
-    
+
     tools {
         maven "mvn" // Maven tool configured in Jenkins
     }
-    
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -16,7 +16,7 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Maven environment...'
-                bat 'mvn -version' // Use sh for Windows; replace with `sh` for Linux agents
+                bat 'mvn -version' // Use sh for Linux agents
             }
         }
         
@@ -36,41 +36,42 @@ pipeline {
         
         stage('Print Working Directory') {
             steps {
-                bat 'echo Current directory: $(pwd)'
+                script {
+                    def workingDir = pwd()
+                    echo "Current directory: ${workingDir}"
+                }
             }
         }
         
         stage('Run Docker Compose') {
             steps {
                 dir("app") {
-                    bat "docker-compose up -d" // Adjust path if docker-compose.yml is elsewhere
+                    bat "docker-compose up -d" // Adjust path if needed
                 }
             }
         }
-         
+        
         stage('Deploy - Staging') {
             steps {
                 echo 'Deploying to Kubernetes (Staging)...'
-                echo 'deploying'
-                /* script {
-                    dir("k8s") { // Assuming Kubernetes scripts are in the 'k8s' directory of your repository
-                        echo 'Applying Kubernetes manifests for staging...'
-                        bat 'kubectl apply -f deployment.yaml'*/
-                    }
-                }
+                // Uncomment below if deploying
+                // script {
+                //     dir("k8s") {
+                //         bat 'kubectl apply -f deployment.yaml'
+                //     }
+                // }
             }
         }
-       
+        
         stage('Deploy - Production') {
             steps {
                 echo 'Deploying to Kubernetes (Production)...'
-                echo 'deploying'
-              /*  script {
-                    dir("k8s") { // Assuming a separate Kubernetes configuration for production
-                        echo 'Applying Kubernetes manifests for production...'
-                       bat 'kubectl apply -f deployment.yaml'*/
-                    }
-                }
+                // Uncomment below if deploying
+                // script {
+                //     dir("k8s") {
+                //         bat 'kubectl apply -f deployment.yaml'
+                //     }
+                // }
             }
         }
     }
